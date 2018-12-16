@@ -3,9 +3,63 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".Tabs.Tab1">
+             tools:context=".Tabs.Tab1"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+    <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkbox"
+            android:text="+"
+            android:paddingTop="3dp"
+            android:layout_marginTop="6dp"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextPrice"
+            android:layout_toRightOf="@+id/checkbox"
+            android:inputType="numberDecimal"
+            android:hint="Price"
+            android:nextFocusDown="@id/editTextDesc"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextDesc"
+            android:layout_toRightOf="@+id/editTextPrice"
+            android:hint="Desc"
+            android:inputType="textImeMultiLine"
+            android:imeOptions="actionDone"/>
+
+    <ToggleButton
+            android:text="ToggleButton"
+            android:textOff="Bar"
+            android:textOn="Karte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toggleButtonOrigin"
+            android:layout_toRightOf="@+id/editTextDesc"/>
+
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/toggleButtonOrigin"
+            android:id="@+id/spinnerCategory">
+
+    </Spinner>
+
+    <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonAdd"
+            android:layout_toRightOf="@id/spinnerCategory"
+            android:src="@drawable/addicon"/>
+
 
     <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/editTextPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recyclerView">

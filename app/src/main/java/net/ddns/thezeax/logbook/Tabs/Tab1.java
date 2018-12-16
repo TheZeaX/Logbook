@@ -99,7 +99,7 @@ public class Tab1 extends Fragment {
         itemList.add(
                 new ListItem(
                         1,
-                        "- 16 €",
+                        5,
                         "1.1.2018",
                         "Subway",
                         "Karte",
@@ -108,7 +108,7 @@ public class Tab1 extends Fragment {
         itemList.add(
                 new ListItem(
                         1,
-                        "- 5.99 €",
+                        10,
                         "2.1.2018",
                         "Libro",
                         "Bar",
@@ -117,7 +117,34 @@ public class Tab1 extends Fragment {
         itemList.add(
                 new ListItem(
                         1,
-                        "- 3.50 €",
+                        50,
+                        "2.1.2018",
+                        "Döner",
+                        "Bar",
+                        "Essen"));
+
+        itemList.add(
+                new ListItem(
+                        1,
+                        -50,
+                        "2.1.2018",
+                        "Döner",
+                        "Bar",
+                        "Essen"));
+
+        itemList.add(
+                new ListItem(
+                        1,
+                        -3,
+                        "2.1.2018",
+                        "Döner",
+                        "Bar",
+                        "Essen"));
+
+        itemList.add(
+                new ListItem(
+                        1,
+                        -16,
                         "2.1.2018",
                         "Döner",
                         "Bar",
@@ -128,7 +155,7 @@ public class Tab1 extends Fragment {
             itemList.add(
                     new ListItem(
                             1,
-                            "- 3.50 €",
+                            0,
                             "2.1.2018",
                             "Döner",
                             "Bar",

@@ -1,7 +1,9 @@
 package net.ddns.thezeax.logbook.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,11 +36,13 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
     public void onBindViewHolder(@NonNull ListItemViewHolder listItemViewHolder, int i) {
         ListItem listItem = itemList.get(i);
 
-        listItemViewHolder.textViewPrice.setText(listItem.getPrice());
+        listItemViewHolder.textViewPrice.setText(String.valueOf(listItem.getPrice()));
         listItemViewHolder.textViewTimestamp.setText(listItem.getTimestamp());
         listItemViewHolder.textViewDesc.setText(listItem.getDesc());
         listItemViewHolder.textViewOrigin.setText(listItem.getOrigin());
         listItemViewHolder.textViewCategory.setText(listItem.getCategory());
+
+        listItemViewHolder.cw.setCardBackgroundColor(Color.parseColor(listItem.getColor()));
     }
 
     @Override
@@ -49,6 +53,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
     class ListItemViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewPrice, textViewTimestamp, textViewDesc, textViewOrigin, textViewCategory;
+        CardView cw;
 
         public ListItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,6 +63,8 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
             textViewDesc = itemView.findViewById(R.id.textViewDesc);
             textViewOrigin = itemView.findViewById(R.id.textViewOrigin);
             textViewCategory = itemView.findViewById(R.id.textViewCategory);
+
+            cw = itemView.findViewById(R.id.cardView);
         }
     }
 
