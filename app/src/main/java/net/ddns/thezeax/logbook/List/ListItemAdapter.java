@@ -18,6 +18,9 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
     private Context context;
     private List<ListItem> itemList;
 
+    double priceSumPositive;
+    double priceSumNegative;
+
     public ListItemAdapter(Context context, List<ListItem> itemList) {
         this.context = context;
         this.itemList = itemList;
@@ -36,7 +39,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
     public void onBindViewHolder(@NonNull ListItemViewHolder listItemViewHolder, int i) {
         ListItem listItem = itemList.get(i);
 
-        listItemViewHolder.textViewPrice.setText(String.valueOf(listItem.getPrice()));
+        listItemViewHolder.textViewPrice.setText(String.valueOf(listItem.getPrice())+ " €");
         listItemViewHolder.textViewTimestamp.setText(listItem.getTimestamp());
         listItemViewHolder.textViewDesc.setText(listItem.getDesc());
         listItemViewHolder.textViewOrigin.setText(listItem.getOrigin());

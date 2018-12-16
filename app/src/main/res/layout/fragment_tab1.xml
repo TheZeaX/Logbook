@@ -12,8 +12,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/checkbox"
             android:text="+"
-            android:paddingTop="3dp"
-            android:layout_marginTop="6dp"/>
+            android:layout_alignBaseline="@+id/editTextPrice"/>
 
     <EditText
             android:layout_width="wrap_content"
@@ -31,7 +30,8 @@
             android:layout_toRightOf="@+id/editTextPrice"
             android:hint="Desc"
             android:inputType="textImeMultiLine"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:layout_toLeftOf="@+id/toggleButtonOrigin"/>
 
     <ToggleButton
             android:text="ToggleButton"
@@ -40,13 +40,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/toggleButtonOrigin"
-            android:layout_toRightOf="@+id/editTextDesc"/>
+            android:layout_toLeftOf="@+id/spinnerCategory"/>
 
     <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/toggleButtonOrigin"
-            android:id="@+id/spinnerCategory">
+            android:id="@+id/spinnerCategory"
+            android:layout_toLeftOf="@+id/buttonAdd">
 
     </Spinner>
 
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buttonAdd"
-            android:layout_toRightOf="@id/spinnerCategory"
+            android:layout_alignParentRight="true"
             android:src="@drawable/addicon"/>
 
 
@@ -64,5 +64,47 @@
             android:layout_height="wrap_content"
             android:id="@+id/recyclerView">
     </android.support.v7.widget.RecyclerView>
+
+    <!--<ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/progressBar"
+            android:progressDrawable="@android:drawable/progress_horizontal"
+            android:indeterminate="false"
+            android:indeterminateOnly="false"
+            android:progress="25"
+            android:progressTint="#16aa3d"
+            android:progressBackgroundTint="#f40925"/>-->
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/progressGreen"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#16aa3d"
+            android:layout_weight="25"
+            android:text="25%"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20dp"/>
+
+        <TextView
+                android:id="@+id/progressRed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="#f40925"
+                android:layout_weight="75"
+                android:text="75%"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

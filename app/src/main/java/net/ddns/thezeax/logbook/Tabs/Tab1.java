@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import net.ddns.thezeax.logbook.List.ListItem;
 import net.ddns.thezeax.logbook.List.ListItemAdapter;
 import net.ddns.thezeax.logbook.R;
@@ -32,7 +35,10 @@ public class Tab1 extends Fragment {
 
     List<ListItem> itemList;
 
+    TextView progressGreen, progressRed;
 
+    double priceSumPositive, priceSumNegative, priceSum;
+    float priceSumPercentage;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,7 +86,6 @@ public class Tab1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
 
 
@@ -155,7 +160,7 @@ public class Tab1 extends Fragment {
             itemList.add(
                     new ListItem(
                             1,
-                            0,
+                            20,
                             "2.1.2018",
                             "Döner",
                             "Bar",
@@ -165,6 +170,28 @@ public class Tab1 extends Fragment {
 
         listItemAdapter = new ListItemAdapter(rootView.getContext(), itemList);
         recyclerView.setAdapter(listItemAdapter);
+
+
+        for (ListItem item : itemList) {
+            if(item.getPrice() > 0) {
+                priceSumPositive += item.getPrice();
+                priceSum += item.getPrice();
+            } else {
+                priceSumNegative += item.getPrice();
+                priceSum += (item.getPrice() * (-1));
+            }
+        }
+
+        progressGreen = rootView.findViewById(R.id.progressGreen);
+        progressRed = rootView.findViewById(R.id.progressRed);
+
+
+        priceSumPercentage = (float) ((100 / priceSum) * priceSumPositive);
+        progressGreen.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, (100 - priceSumPercentage)));
+        progressRed.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, priceSumPercentage));
+
+        progressGreen.setText(String.valueOf(priceSumPositive));
+        progressRed.setText(String.valueOf(priceSumNegative));
 
 
 
