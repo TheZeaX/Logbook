@@ -55,7 +55,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/buttonAdd"
             android:layout_alignParentRight="true"
-            android:src="@drawable/addicon"/>
+            android:src="@drawable/addicon"
+            android:layout_centerHorizontal="true"/>
 
 
     <android.support.v7.widget.RecyclerView
