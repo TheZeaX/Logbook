@@ -37,6 +37,8 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
         listItemViewHolder.textViewPrice.setText(listItem.getPrice());
         listItemViewHolder.textViewTimestamp.setText(listItem.getTimestamp());
         listItemViewHolder.textViewDesc.setText(listItem.getDesc());
+        listItemViewHolder.textViewOrigin.setText(listItem.getOrigin());
+        listItemViewHolder.textViewCategory.setText(listItem.getCategory());
     }
 
     @Override
@@ -46,7 +48,7 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
 
     class ListItemViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textViewPrice, textViewTimestamp, textViewDesc;
+        TextView textViewPrice, textViewTimestamp, textViewDesc, textViewOrigin, textViewCategory;
 
         public ListItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,6 +56,8 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
             textViewPrice = itemView.findViewById(R.id.textViewPrice);
             textViewTimestamp = itemView.findViewById(R.id.textViewTimestamp);
             textViewDesc = itemView.findViewById(R.id.textViewDesc);
+            textViewOrigin = itemView.findViewById(R.id.textViewOrigin);
+            textViewCategory = itemView.findViewById(R.id.textViewCategory);
         }
     }
 

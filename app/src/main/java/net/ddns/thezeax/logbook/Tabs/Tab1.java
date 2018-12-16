@@ -123,6 +123,19 @@ public class Tab1 extends Fragment {
                         "Bar",
                         "Essen"));
 
+        int i = 1;
+        while (i < 10) {
+            itemList.add(
+                    new ListItem(
+                            1,
+                            "- 3.50 €",
+                            "2.1.2018",
+                            "Döner",
+                            "Bar",
+                            "Essen"));
+            i++;
+        }
+
         listItemAdapter = new ListItemAdapter(rootView.getContext(), itemList);
         recyclerView.setAdapter(listItemAdapter);
 
