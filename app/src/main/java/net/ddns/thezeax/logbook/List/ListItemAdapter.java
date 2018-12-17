@@ -18,9 +18,6 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
     private Context context;
     private List<ListItem> itemList;
 
-    double priceSumPositive;
-    double priceSumNegative;
-
     public ListItemAdapter(Context context, List<ListItem> itemList) {
         this.context = context;
         this.itemList = itemList;

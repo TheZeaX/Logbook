@@ -1,6 +1,8 @@
 package net.ddns.thezeax.logbook.Tabs;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import net.ddns.thezeax.logbook.DatabaseHelper;
 import net.ddns.thezeax.logbook.List.ListItem;
@@ -96,12 +99,17 @@ public class Tab1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        final View rootView = inflater.inflate(R.layout.fragment_tab1, container, false);
+        checkBox = rootView.findViewById(R.id.checkbox);
+        editTextPrice = rootView.findViewById(R.id.editTextPrice);
+        editTextDesc = rootView.findViewById(R.id.editTextDesc);
+        toggleButton = rootView.findViewById(R.id.toggleButtonOrigin);
+        spinner = rootView.findViewById(R.id.spinnerCategory);
+        buttonAdd = rootView.findViewById(R.id.buttonAdd);
+        databaseHelper = new DatabaseHelper(getContext());
 
-        //###################################################################################################################################################
 
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_tab1, container, false);
-
+        //################################################################################################################
 
         itemList = new ArrayList<>();
 
@@ -109,104 +117,23 @@ public class Tab1 extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
-        itemList.add(
-                new ListItem(
-                        1,
-                        5,
-                        "1.1.2018",
-                        "Subway",
-                        "Karte",
-                        "Essen"));
-
-        itemList.add(
-                new ListItem(
-                        1,
-                        10,
-                        "2.1.2018",
-                        "Libro",
-                        "Bar",
-                        "Schule"));
-
-        itemList.add(
-                new ListItem(
-                        1,
-                        50,
-                        "2.1.2018",
-                        "Döner",
-                        "Bar",
-                        "Essen"));
-
-        itemList.add(
-                new ListItem(
-                        1,
-                        -50,
-                        "2.1.2018",
-                        "Döner",
-                        "Bar",
-                        "Essen"));
-
-        itemList.add(
-                new ListItem(
-                        1,
-                        -3,
-                        "2.1.2018",
-                        "Döner",
-                        "Bar",
-                        "Essen"));
-
-        itemList.add(
-                new ListItem(
-                        1,
-                        -16,
-                        "2.1.2018",
-                        "Döner",
-                        "Bar",
-                        "Essen"));
-
-
         listItemAdapter = new ListItemAdapter(rootView.getContext(), itemList);
         recyclerView.setAdapter(listItemAdapter);
-
-
-        for (ListItem item : itemList) {
-            if(item.getPrice() > 0) {
-                priceSumPositive += item.getPrice();
-                priceSum += item.getPrice();
-            } else {
-                priceSumNegative += item.getPrice();
-                priceSum += (item.getPrice() * (-1));
-            }
-        }
-
-        progressGreen = rootView.findViewById(R.id.progressGreen);
-        progressRed = rootView.findViewById(R.id.progressRed);
-
-
-        priceSumPercentage = (float) ((100 / priceSum) * priceSumPositive);
-        progressGreen.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, (100 - priceSumPercentage)));
-        progressRed.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, priceSumPercentage));
-
-        progressGreen.setText(String.valueOf(priceSumPositive));
-        progressRed.setText(String.valueOf(priceSumNegative));
-
-
-        databaseHelper = new DatabaseHelper(rootView.getContext());
-        checkBox = rootView.findViewById(R.id.checkbox);
-        editTextPrice = rootView.findViewById(R.id.editTextPrice);
-        editTextDesc = rootView.findViewById(R.id.editTextDesc);
-        toggleButton = rootView.findViewById(R.id.toggleButtonOrigin);
-        spinner = rootView.findViewById(R.id.spinnerCategory);
-        buttonAdd = rootView.findViewById(R.id.buttonAdd);
 
         buttonAdd.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         addData();
+                        displayData();
+                        refreshStatusBar(rootView);
+                        listItemAdapter.notifyDataSetChanged();
                     }
                 }
         );
 
+        displayData();
+        refreshStatusBar(rootView);
 
         return rootView;
     }
@@ -263,22 +190,76 @@ public class Tab1 extends Fragment {
             if (!checkBox.isChecked())
                 priceHelper = Double.parseDouble(editTextPrice.getText().toString()) * (-1);
             else
-                priceHelper = Double.parseDouble(editTextDesc.getText().toString());
+                priceHelper = Double.parseDouble(editTextPrice.getText().toString());
 
             if (toggleButton.isChecked())
-                originHelper = "Bar";
-            else
                 originHelper = "Karte";
+            else
+                originHelper = "Bar";
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            boolean isInserted = databaseHelper.insertData(Double.parseDouble(String.valueOf(priceHelper)), editTextDesc.getText().toString(), timestamp.toString(), originHelper, null/*spinner.getSelectedItem().toString()*/);
+            boolean isInserted = databaseHelper.insertData(Double.parseDouble(String.valueOf(priceHelper)), editTextDesc.getText().toString(), timestamp.toString().substring(0,10), originHelper, null/*spinner.getSelectedItem().toString()*/);
 
-            if (isInserted)
+            if (isInserted) {
                 Toast.makeText(getContext(), "Data inserted!", Toast.LENGTH_SHORT).show();
-            else
+                editTextPrice.setText(null);
+                editTextDesc.setText(null);
+                checkBox.setChecked(false);
+                toggleButton.setChecked(false);
+
+                InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getView().getApplicationWindowToken(), 0);
+            } else
                 Toast.makeText(getContext(), "something went wrong :(", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public void displayData() {
+        Cursor res = databaseHelper.getAllData();
+        itemList.clear();
+        if(res.getCount() == 0) {
+            Toast.makeText(getContext(), "No data to display!", Toast.LENGTH_SHORT).show();
+        } else {
+            //StringBuffer stringBuffer = new StringBuffer();
+            while(res.moveToNext()) {
+                //stringBuffer.append("id: "+ res.getString(0));
+                itemList.add(0,
+                        new ListItem(
+                                Integer.parseInt(res.getString(0)),
+                                Double.parseDouble(res.getString(1)),
+                                res.getString(3),
+                                res.getString(2),
+                                res.getString(4),
+                                res.getString(5)));
+            }
+        }
+    }
+
+    public void refreshStatusBar(View root) {
+        priceSumPositive = 0;
+        priceSumNegative = 0;
+        priceSum = 0;
+
+        for (ListItem item : itemList) {
+            if(item.getPrice() > 0) {
+                priceSumPositive += item.getPrice();
+                priceSum += item.getPrice();
+            } else {
+                priceSumNegative += item.getPrice();
+                priceSum += (item.getPrice() * (-1));
+            }
+        }
+
+        progressGreen = root.findViewById(R.id.progressGreen);
+        progressRed = root.findViewById(R.id.progressRed);
+
+        priceSumPercentage = (float) ((100 / priceSum) * priceSumPositive);
+        progressGreen.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, (100 - priceSumPercentage)));
+        progressRed.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, priceSumPercentage));
+
+        progressGreen.setText(String.valueOf(priceSumPositive));
+        progressRed.setText(String.valueOf(priceSumNegative));
     }
 
 }
