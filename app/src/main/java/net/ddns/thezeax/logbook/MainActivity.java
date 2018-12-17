@@ -11,6 +11,8 @@ import net.ddns.thezeax.logbook.Tabs.Tab2;
 
 public class MainActivity extends AppCompatActivity implements Tab1.OnFragmentInteractionListener, Tab2.OnFragmentInteractionListener, Tab3.OnFragmentInteractionListener{
 
+    //DatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements Tab1.OnFragmentIn
 
             }
         });
+
+
+        //databaseHelper = new DatabaseHelper(this);
+
     }
 
     @Override

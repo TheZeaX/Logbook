@@ -9,13 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
+import android.widget.*;
+import net.ddns.thezeax.logbook.DatabaseHelper;
 import net.ddns.thezeax.logbook.List.ListItem;
 import net.ddns.thezeax.logbook.List.ListItemAdapter;
 import net.ddns.thezeax.logbook.R;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +39,15 @@ public class Tab1 extends Fragment {
 
     double priceSumPositive, priceSumNegative, priceSum;
     float priceSumPercentage;
+
+    DatabaseHelper databaseHelper;
+    CheckBox checkBox;
+    EditText editTextPrice, editTextDesc;
+    ToggleButton toggleButton;
+    Spinner spinner;
+    ImageButton buttonAdd;
+    double priceHelper;
+    String originHelper;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -86,7 +95,6 @@ public class Tab1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
 
         //###################################################################################################################################################
@@ -155,18 +163,6 @@ public class Tab1 extends Fragment {
                         "Bar",
                         "Essen"));
 
-        int i = 1;
-        while (i < 10) {
-            itemList.add(
-                    new ListItem(
-                            1,
-                            20,
-                            "2.1.2018",
-                            "Döner",
-                            "Bar",
-                            "Essen"));
-            i++;
-        }
 
         listItemAdapter = new ListItemAdapter(rootView.getContext(), itemList);
         recyclerView.setAdapter(listItemAdapter);
@@ -193,6 +189,23 @@ public class Tab1 extends Fragment {
         progressGreen.setText(String.valueOf(priceSumPositive));
         progressRed.setText(String.valueOf(priceSumNegative));
 
+
+        databaseHelper = new DatabaseHelper(rootView.getContext());
+        checkBox = rootView.findViewById(R.id.checkbox);
+        editTextPrice = rootView.findViewById(R.id.editTextPrice);
+        editTextDesc = rootView.findViewById(R.id.editTextDesc);
+        toggleButton = rootView.findViewById(R.id.toggleButtonOrigin);
+        spinner = rootView.findViewById(R.id.spinnerCategory);
+        buttonAdd = rootView.findViewById(R.id.buttonAdd);
+
+        buttonAdd.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addData();
+                    }
+                }
+        );
 
 
         return rootView;
@@ -236,4 +249,36 @@ public class Tab1 extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    public void addData() {
+        if(editTextPrice.getText().toString().equals(null) || editTextPrice.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "Please insert data first!", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(editTextDesc.getText().toString().equals(null) || editTextDesc.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "Please insert data first!", Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+
+            if (!checkBox.isChecked())
+                priceHelper = Double.parseDouble(editTextPrice.getText().toString()) * (-1);
+            else
+                priceHelper = Double.parseDouble(editTextDesc.getText().toString());
+
+            if (toggleButton.isChecked())
+                originHelper = "Bar";
+            else
+                originHelper = "Karte";
+
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            boolean isInserted = databaseHelper.insertData(Double.parseDouble(String.valueOf(priceHelper)), editTextDesc.getText().toString(), timestamp.toString(), originHelper, null/*spinner.getSelectedItem().toString()*/);
+
+            if (isInserted)
+                Toast.makeText(getContext(), "Data inserted!", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getContext(), "something went wrong :(", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 }
