@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkbox"
+                android:text="+"
+                android:layout_alignBaseline="@+id/editTextPrice"/>
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextPrice"
+                android:layout_toRightOf="@+id/checkbox"
+                android:inputType="numberDecimal"
+                android:hint="Price"
+                android:nextFocusDown="@id/editTextDesc"/>
+
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextDesc"
+                android:layout_toRightOf="@+id/editTextPrice"
+                android:hint="Desc"
+                android:inputType="textImeMultiLine"
+                android:imeOptions="actionDone"
+                android:layout_toLeftOf="@+id/toggleButtonOrigin"/>
+
+        <ToggleButton
+                android:text="ToggleButton"
+                android:textOff="Bar"
+                android:textOn="Karte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/toggleButtonOrigin"
+                android:layout_toLeftOf="@+id/spinnerCategory"/>
+
+        <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerCategory"
+                android:layout_alignParentRight="true">
+
+        </Spinner>
+
+</RelativeLayout>

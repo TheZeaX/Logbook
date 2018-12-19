@@ -200,7 +200,7 @@ public class Tab1 extends Fragment {
                 originHelper = "Bar";
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            boolean isInserted = databaseHelper.insertData(Double.parseDouble(String.valueOf(priceHelper)), editTextDesc.getText().toString(), timestamp.toString().substring(0,10), originHelper, null/*spinner.getSelectedItem().toString()*/);
+            boolean isInserted = databaseHelper.insertData(Double.parseDouble(String.valueOf(priceHelper)), editTextDesc.getText().toString(), timestamp.toString().substring(0,10), originHelper, ""/*spinner.getSelectedItem().toString()*/);
 
             if (isInserted) {
                 Toast.makeText(getContext(), "Data inserted!", Toast.LENGTH_SHORT).show();
@@ -260,7 +260,7 @@ public class Tab1 extends Fragment {
         progressGreen.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, (100 - priceSumPercentage)));
         progressRed.setLayoutParams(new TableLayout.LayoutParams(0, TableLayout.LayoutParams.MATCH_PARENT, priceSumPercentage));
 
-        progressGreen.setText(String.valueOf(priceSumPositive));
-        progressRed.setText(String.valueOf(priceSumNegative));
+        progressGreen.setText(String.valueOf(priceSumPositive)+ " €");
+        progressRed.setText(String.valueOf(priceSumNegative)+ " €");
     }
 }
