@@ -2,10 +2,10 @@ package net.ddns.thezeax.logbook.Tabs;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -51,6 +51,7 @@ public class Tab1 extends Fragment {
     ImageButton buttonAdd;
     double priceHelper;
     String originHelper;
+    CardView cw;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -107,6 +108,7 @@ public class Tab1 extends Fragment {
         spinner = rootView.findViewById(R.id.spinnerCategory);
         buttonAdd = rootView.findViewById(R.id.buttonAdd);
         databaseHelper = new DatabaseHelper(getContext());
+        cw = rootView.findViewById(R.id.cardView);
 
 
         //################################################################################################################
@@ -261,5 +263,4 @@ public class Tab1 extends Fragment {
         progressGreen.setText(String.valueOf(priceSumPositive));
         progressRed.setText(String.valueOf(priceSumNegative));
     }
-
 }
