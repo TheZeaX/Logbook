@@ -1,19 +1,28 @@
 package net.ddns.thezeax.logbook.List;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+import net.ddns.thezeax.logbook.DatabaseHelper;
+import net.ddns.thezeax.logbook.MainActivity;
 import net.ddns.thezeax.logbook.R;
+import net.ddns.thezeax.logbook.Tabs.Tab1;
 
 import java.util.List;
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListItemViewHolder>{
+
+    DatabaseHelper db;
 
     private Context context;
     private List<ListItem> itemList;
@@ -33,9 +42,10 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListItemViewHolder listItemViewHolder, int i) {
-        ListItem listItem = itemList.get(i);
+    public void onBindViewHolder(@NonNull final ListItemViewHolder listItemViewHolder, final int i) {
+        final ListItem listItem = itemList.get(i);
 
+        listItemViewHolder.textViewId.setText(String.valueOf(listItem.getId()));
         listItemViewHolder.textViewPrice.setText(String.valueOf(listItem.getPrice())+ " €");
         listItemViewHolder.textViewTimestamp.setText(listItem.getTimestamp());
         listItemViewHolder.textViewDesc.setText(listItem.getDesc());
@@ -43,6 +53,39 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
         listItemViewHolder.textViewCategory.setText(listItem.getCategory());
 
         listItemViewHolder.cw.setCardBackgroundColor(Color.parseColor(listItem.getColor()));
+        db = new DatabaseHelper(context);
+
+        listItemViewHolder.cw.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        //Toast.makeText(context, "Click registered", Toast.LENGTH_SHORT).show();
+
+                        AlertDialog.Builder builder= new AlertDialog.Builder(context);
+                        builder.setMessage("What do you want to do?").setCancelable(false).setPositiveButton("Delete!", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //delete stuff
+                                db.deleteData(Integer.parseInt(listItemViewHolder.textViewId.getText().toString()));
+
+                                Intent intent = new Intent(context, MainActivity.class);
+                                context.startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("Cancel!", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.setTitle(listItemViewHolder.textViewPrice.getText().toString() + " " + listItemViewHolder.textViewDesc.getText().toString());
+                        alertDialog.show();
+                        return false;
+                    }
+                }
+        );
     }
 
     @Override
@@ -52,12 +95,13 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
 
     class ListItemViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textViewPrice, textViewTimestamp, textViewDesc, textViewOrigin, textViewCategory;
+        TextView textViewId, textViewPrice, textViewTimestamp, textViewDesc, textViewOrigin, textViewCategory;
         CardView cw;
 
         public ListItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            textViewId = itemView.findViewById(R.id.textViewId);
             textViewPrice = itemView.findViewById(R.id.textViewPrice);
             textViewTimestamp = itemView.findViewById(R.id.textViewTimestamp);
             textViewDesc = itemView.findViewById(R.id.textViewDesc);
@@ -67,5 +111,4 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListIt
             cw = itemView.findViewById(R.id.cardView);
         }
     }
-
 }

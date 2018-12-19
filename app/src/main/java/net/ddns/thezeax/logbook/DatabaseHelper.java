@@ -20,9 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-
-        //SQLiteDatabase db = this.getWritableDatabase();
-        //db.execSQL("delete from "+TABLE_NAME);
     }
 
     @Override
@@ -64,5 +61,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from "+ TABLE_NAME, null);
         return res;
+    }
+
+    public void deleteData(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_NAME +" where "+ COL1 +" = "+ id);
     }
 }
